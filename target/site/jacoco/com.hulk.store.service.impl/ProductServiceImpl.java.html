@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">store</a> &gt; <a href="index.source.html" class="el_package">com.hulk.store.service.impl</a> &gt; <span class="el_source">ProductServiceImpl.java</span></div><h1>ProductServiceImpl.java</h1><pre class="source lang-java linenums">package com.hulk.store.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
+import com.hulk.store.converter.ProductConverter;
+import com.hulk.store.entity.Inventory;
+import com.hulk.store.entity.Product;
+import com.hulk.store.entity.ProductCategory;
+import com.hulk.store.model.ProductRequest;
+import com.hulk.store.model.ProductResponse;
+import com.hulk.store.repository.ProductInventoryRepository;
+import com.hulk.store.service.ProductInventoryService;
+import com.hulk.store.service.ProductService;
+
+import lombok.extern.slf4j.Slf4j;
+
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ProductServiceImpl.
+ */
+@Service(&quot;productServiceImpl&quot;)
+
+/** The Constant log. */
+<span class="fc" id="L28">@Slf4j</span>
+<span class="fc" id="L29">public class ProductServiceImpl extends ExceptionCommonServiceImpl implements ProductService {</span>
+
+	/** The Constant REMOVED_PRODUCT. */
+<span class="fc" id="L32">	public static final String REMOVED_PRODUCT = &quot;The product was removed successfully.&quot;;</span>
+
+	/** The product converter. */
+	@Autowired
+	@Qualifier(&quot;productConverter&quot;)
+	private ProductConverter productConverter;
+
+	/** The product inventory service. */
+	@Autowired
+	@Qualifier(&quot;productInventoryServiceImpl&quot;)
+	private ProductInventoryService productInventoryService;
+
+	/** The product inventory repository. */
+	@Autowired
+	@Qualifier(&quot;productInventoryRepository&quot;)
+	private ProductInventoryRepository productInventoryRepository;
+
+	/**
+	 * Creates the product.
+	 *
+	 * @param productRequest the product request
+	 * @return the product response
+	 */
+	@Override
+	public ProductResponse createProduct(ProductRequest productRequest) {
+<span class="fc" id="L57">		log.info(&quot;Ejecuta servicio: createProduct&quot;);</span>
+<span class="fc" id="L58">		checkProductExistByName(productRequest.getProductName());</span>
+<span class="fc" id="L59">		ProductCategory productCategory = getProductCategoryByIdProductCategory(productRequest.getIdProductCategory());</span>
+<span class="fc" id="L60">		Inventory inventory = getInventoryByIdInventory(productRequest.getIdInventory());</span>
+<span class="fc" id="L61">		Product product = productRepository</span>
+<span class="fc" id="L62">				.save(productConverter.convertProductRequestToProduct(productRequest, productCategory));</span>
+<span class="fc" id="L63">		productInventoryService.createProductInventory(product, inventory);</span>
+<span class="fc" id="L64">		return productConverter.convertProductToProductResponse(product);</span>
+	}
+
+	/**
+	 * Update product.
+	 *
+	 * @param idProduct the id product
+	 * @param productRequest the product request
+	 * @return the product response
+	 */
+	@Override
+	public ProductResponse updateProduct(String idProduct, ProductRequest productRequest) {
+<span class="fc" id="L76">		log.info(&quot;Ejecuta servicio: updateProduct&quot;);</span>
+<span class="fc" id="L77">		getProductCategoryByIdProductCategory(productRequest.getIdProductCategory());</span>
+<span class="fc" id="L78">		Product product = getProductByIdProduct(idProduct);</span>
+<span class="fc" id="L79">		product.setProductName(productRequest.getProductName());</span>
+<span class="fc" id="L80">		product.setProductPrice(productRequest.getProductPrice());</span>
+<span class="fc" id="L81">		product.setProductCategory(productCategoryRepository.findById(productRequest.getIdProductCategory()).get());</span>
+<span class="fc" id="L82">		return productConverter.convertProductToProductResponse(productRepository.save(product));</span>
+	}
+
+	/**
+	 * Delete product.
+	 *
+	 * @param idProduct the id product
+	 * @return the string
+	 */
+	@Override
+	public String deleteProduct(String idProduct) {
+<span class="fc" id="L93">		log.info(&quot;Ejecuta servicio: deleteProduct&quot;);</span>
+<span class="fc" id="L94">		Product product = getProductByIdProduct(idProduct);</span>
+<span class="fc" id="L95">		productInventoryService</span>
+<span class="fc" id="L96">				.deleteListProductInventory(productInventoryRepository.findProductInventoryByProduct(product));</span>
+<span class="fc" id="L97">		productRepository.delete(productRepository.findById(idProduct).get());</span>
+<span class="fc" id="L98">		return REMOVED_PRODUCT;</span>
+	}
+
+	/**
+	 * Gets the product.
+	 *
+	 * @param idProduct the id product
+	 * @return the product
+	 */
+	@Override
+	public ProductResponse getProduct(String idProduct) {
+<span class="fc" id="L109">		log.info(&quot;Ejecuta servicio: getProduct&quot;);</span>
+<span class="fc" id="L110">		Product product = getProductByIdProduct(idProduct);</span>
+<span class="fc" id="L111">		return productConverter.convertProductToProductResponse(product);</span>
+	}
+
+	/**
+	 * Gets the all products.
+	 *
+	 * @return the all products
+	 */
+	@Override
+	public List&lt;ProductResponse&gt; getAllProducts() {
+<span class="fc" id="L121">		log.info(&quot;Ejecuta servicio: getAllProducts&quot;);</span>
+<span class="fc" id="L122">		return productConverter.convertListProductToListProductResponse(productRepository.findAll());</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

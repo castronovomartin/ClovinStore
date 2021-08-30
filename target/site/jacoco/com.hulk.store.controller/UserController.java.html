@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">store</a> &gt; <a href="index.source.html" class="el_package">com.hulk.store.controller</a> &gt; <span class="el_source">UserController.java</span></div><h1>UserController.java</h1><pre class="source lang-java linenums">package com.hulk.store.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.hulk.store.model.UserRequest;
+import com.hulk.store.service.UserService;
+
+import lombok.extern.slf4j.Slf4j;
+
+// TODO: Auto-generated Javadoc
+/**
+ * The Class UserController.
+ */
+@RestController
+@RequestMapping(&quot;/users&quot;)
+
+/** The Constant log. */
+<span class="fc" id="L25">@Slf4j</span>
+<span class="fc" id="L26">public class UserController {</span>
+
+	/** The user service. */
+	@Autowired
+	@Qualifier(&quot;userServiceImpl&quot;)
+	private UserService userService;
+
+	/**
+	 * Creates the user.
+	 *
+	 * @param userRequest the user request
+	 * @return the response entity
+	 */
+	@PostMapping
+	public ResponseEntity&lt;String&gt; createUser(@RequestBody UserRequest userRequest) {
+<span class="nc" id="L41">		log.info(&quot;Entra al controller del servicio createUser&quot;);</span>
+<span class="nc" id="L42">		String messageResponse = userService.createUser(userRequest);</span>
+<span class="nc" id="L43">		return new ResponseEntity&lt;String&gt;(messageResponse, HttpStatus.OK);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

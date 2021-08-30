@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ShoppingCartServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">store</a> &gt; <a href="index.source.html" class="el_package">com.hulk.store.service.impl</a> &gt; <span class="el_source">ShoppingCartServiceImpl.java</span></div><h1>ShoppingCartServiceImpl.java</h1><pre class="source lang-java linenums">package com.hulk.store.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
+import com.hulk.store.entity.Inventory;
+import com.hulk.store.entity.Product;
+import com.hulk.store.entity.ProductInventory;
+import com.hulk.store.entity.ShoppingCart;
+import com.hulk.store.entity.ShoppingCartProduct;
+import com.hulk.store.entity.User;
+import com.hulk.store.model.ShoppingCartRequest;
+import com.hulk.store.service.ShoppingCartProductService;
+import com.hulk.store.service.ShoppingCartService;
+
+import lombok.extern.slf4j.Slf4j;
+
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ShoppingCartServiceImpl.
+ */
+@Service(&quot;shoppingCartServiceImpl&quot;)
+
+/** The Constant log. */
+<span class="fc" id="L30">@Slf4j</span>
+<span class="fc" id="L31">public class ShoppingCartServiceImpl extends ExceptionCommonServiceImpl implements ShoppingCartService {</span>
+
+	/** The Constant ADDED_PRODUCT. */
+	public static final String ADDED_PRODUCT = &quot;The product has been successfully added to the shopping cart.&quot;;
+	
+	/** The Constant REMOVED_PRODUCT. */
+	public static final String REMOVED_PRODUCT = &quot;The product has been successfully removed from the shopping cart.&quot;;
+	
+	/** The Constant SUCCESSFUL_PURCHASE. */
+<span class="fc" id="L40">	public static final String SUCCESSFUL_PURCHASE = &quot;The purchase was successful.&quot;;</span>
+
+	/** The shopping cart product service. */
+	@Autowired
+	@Qualifier(&quot;shoppingCartProductServiceImpl&quot;)
+	private ShoppingCartProductService shoppingCartProductService;
+
+	/**
+	 * Adds the product shopping cart.
+	 *
+	 * @param shoppingCartRequest the shopping cart request
+	 * @return the string
+	 */
+	@Override
+	public String addProductShoppingCart(ShoppingCartRequest shoppingCartRequest) {
+<span class="fc" id="L55">		log.info(&quot;Ejecuta servicio: addProductShoppingCart&quot;);</span>
+<span class="fc" id="L56">		Product product = getProductByIdProduct(shoppingCartRequest.getIdProduct());</span>
+<span class="fc" id="L57">		Inventory inventory = getInventoryByIdInventory(shoppingCartRequest.getIdInventory());</span>
+<span class="fc" id="L58">		User user = getUserByIdUser(shoppingCartRequest.getIdUser());</span>
+<span class="fc" id="L59">		checkIfThereIsStockByIdProduct(product, inventory, 1);</span>
+<span class="fc" id="L60">		ShoppingCart shoppingCart = shoppingCartRepository.findByUser(user);</span>
+
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">		if (Objects.isNull(shoppingCart)) {</span>
+<span class="nc" id="L63">			shoppingCart = ShoppingCart.builder().user(user).totalPrice(product.getProductPrice()).build();</span>
+<span class="nc" id="L64">			shoppingCartRepository.save(shoppingCart);</span>
+<span class="nc" id="L65">			shoppingCartProductService.createShoppingCartProduct(product, shoppingCart);</span>
+<span class="nc" id="L66">		} else {</span>
+<span class="fc" id="L67">			shoppingCart.setTotalPrice(shoppingCart.getTotalPrice() + product.getProductPrice());</span>
+<span class="fc" id="L68">			shoppingCartRepository.save(shoppingCart);</span>
+<span class="fc" id="L69">			shoppingCartProductService.addProductToShoppingCart(product, shoppingCart);</span>
+		}
+<span class="fc" id="L71">		return ADDED_PRODUCT;</span>
+	}
+
+	/**
+	 * Delete product shopping cart.
+	 *
+	 * @param idShoppingCart the id shopping cart
+	 * @param shoppingCartRequest the shopping cart request
+	 * @return the string
+	 */
+	@Override
+	public String deleteProductShoppingCart(String idShoppingCart, ShoppingCartRequest shoppingCartRequest) {
+<span class="fc" id="L83">		log.info(&quot;Ejecuta servicio: deleteProductShoppingCart&quot;);</span>
+<span class="fc" id="L84">		Product product = getProductByIdProduct(shoppingCartRequest.getIdProduct());</span>
+<span class="fc" id="L85">		ShoppingCart shoppingCart = getShoppingCartByIdShoppingCart(idShoppingCart);</span>
+<span class="fc" id="L86">		ShoppingCartProduct shoppingCartProduct = shoppingCartProductRepository.findByProductAndShoppingCart(product,</span>
+<span class="fc" id="L87">				shoppingCart);</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">		if (shoppingCartProduct.getProductQuantity() &lt; 1) {</span>
+<span class="fc" id="L89">			shoppingCartProductRepository.delete(shoppingCartProduct);</span>
+
+<span class="fc" id="L91">		} else {</span>
+<span class="nc" id="L92">			shoppingCartProduct.setProductQuantity(shoppingCartProduct.getProductQuantity() - 1);</span>
+<span class="nc" id="L93">			shoppingCartProductRepository.save(shoppingCartProduct);</span>
+		}
+<span class="fc" id="L95">		shoppingCart.setTotalPrice(shoppingCart.getTotalPrice() - product.getProductPrice());</span>
+<span class="fc" id="L96">		shoppingCartRepository.save(shoppingCart);</span>
+<span class="fc" id="L97">		return REMOVED_PRODUCT;</span>
+	}
+
+	/**
+	 * Make A purchase.
+	 *
+	 * @param idShoppingCart the id shopping cart
+	 * @param idInventory the id inventory
+	 * @return the string
+	 */
+	@Override
+	public String makeAPurchase(String idShoppingCart, String idInventory) {
+<span class="fc" id="L109">		log.info(&quot;Ejecuta servicio: makeAPurchase&quot;);</span>
+<span class="fc" id="L110">		Inventory inventory = getInventoryByIdInventory(idInventory);</span>
+<span class="fc" id="L111">		ShoppingCart shoppingCart = getShoppingCartByIdShoppingCart(idShoppingCart);</span>
+<span class="fc" id="L112">		checkIfTheUserHasAnAssociatedCard(shoppingCart.getUser());</span>
+<span class="fc" id="L113">		List&lt;ShoppingCartProduct&gt; listShoppingCartProducts = new ArrayList&lt;&gt;();</span>
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">		for (ShoppingCartProduct shoppingCartProduct : shoppingCartProductRepository.findByShoppingCart(shoppingCart)) {</span>
+<span class="nc" id="L115">			checkIfThereIsStockByIdProduct(shoppingCartProduct.getProduct(), inventory,</span>
+<span class="nc" id="L116">					shoppingCartProduct.getProductQuantity());</span>
+<span class="nc" id="L117">			listShoppingCartProducts.add(shoppingCartProduct);</span>
+
+		}
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">		for (ShoppingCartProduct shoppingCartProduct : listShoppingCartProducts) {</span>
+<span class="nc" id="L121">			ProductInventory productInventory = productInventoryRepository</span>
+<span class="nc" id="L122">					.findProductInventoryByProductAndInventory(shoppingCartProduct.getProduct(), inventory);</span>
+<span class="nc" id="L123">			productInventory</span>
+<span class="nc" id="L124">					.setStockProduct(productInventory.getStockProduct() - shoppingCartProduct.getProductQuantity());</span>
+<span class="nc" id="L125">			productInventoryRepository.save(productInventory);</span>
+<span class="nc" id="L126">			shoppingCartProductRepository.delete(shoppingCartProduct);</span>
+		}
+<span class="fc" id="L128">		shoppingCartRepository.delete(shoppingCart);</span>
+<span class="fc" id="L129">		return SUCCESSFUL_PURCHASE;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

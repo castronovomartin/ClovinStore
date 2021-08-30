@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductInventory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">store</a> &gt; <a href="index.source.html" class="el_package">com.hulk.store.entity</a> &gt; <span class="el_source">ProductInventory.java</span></div><h1>ProductInventory.java</h1><pre class="source lang-java linenums">package com.hulk.store.entity;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ProductInventory.
+ */
+@Entity
+@Table(name = &quot;product_inventories&quot;)
+
+/**
+ * Gets the stock product.
+ *
+ * @return the stock product
+ */
+@Getter
+
+/**
+ * Sets the stock product.
+ *
+ * @param stockProduct the new stock product
+ */
+<span class="nc" id="L40">@Setter</span>
+
+/**
+ * To string.
+ *
+ * @return the java.lang. string
+ */
+<span class="pc" id="L47">@Builder</span>
+
+/**
+ * Instantiates a new product inventory.
+ *
+ * @param idProductInventory the id product inventory
+ * @param inventory the inventory
+ * @param product the product
+ * @param stockProduct the stock product
+ */
+<span class="fc" id="L57">@AllArgsConstructor</span>
+
+/**
+ * Instantiates a new product inventory.
+ */
+<span class="fc" id="L62">@NoArgsConstructor</span>
+public class ProductInventory {
+
+	/** The id product inventory. */
+	@Id
+	@Column(name = &quot;id_product_inventory&quot;, unique = true, nullable = false)
+	@GenericGenerator(name = &quot;uuid&quot;, strategy = &quot;uuid2&quot;)
+	@GeneratedValue(generator = &quot;uuid&quot;)
+<span class="nc" id="L70">	private String idProductInventory;</span>
+	
+	/** The inventory. */
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@JoinColumn(name = &quot;id_inventory&quot;)
+<span class="nc" id="L75">	private Inventory inventory;</span>
+	
+	/** The product. */
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@JoinColumn(name = &quot;id_product&quot;)
+<span class="nc" id="L80">	private Product product;</span>
+	
+	/** The stock product. */
+	@Column(name = &quot;stock_product&quot;)
+<span class="fc" id="L84">	private int stockProduct;</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

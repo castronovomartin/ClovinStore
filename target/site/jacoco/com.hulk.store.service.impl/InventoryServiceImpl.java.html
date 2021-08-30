@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InventoryServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">store</a> &gt; <a href="index.source.html" class="el_package">com.hulk.store.service.impl</a> &gt; <span class="el_source">InventoryServiceImpl.java</span></div><h1>InventoryServiceImpl.java</h1><pre class="source lang-java linenums">package com.hulk.store.service.impl;
+
+import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
+import com.hulk.store.converter.InventoryConverter;
+import com.hulk.store.entity.Inventory;
+import com.hulk.store.entity.Product;
+import com.hulk.store.entity.ProductInventory;
+import com.hulk.store.model.InventoryRequest;
+import com.hulk.store.model.InventoryResponse;
+import com.hulk.store.repository.InventoryRepository;
+import com.hulk.store.repository.ProductInventoryRepository;
+import com.hulk.store.repository.ProductRepository;
+import com.hulk.store.service.InventoryService;
+
+import lombok.extern.slf4j.Slf4j;
+
+// TODO: Auto-generated Javadoc
+/**
+ * The Class InventoryServiceImpl.
+ */
+@Service(&quot;inventoryServiceImpl&quot;)
+
+/** The Constant log. */
+<span class="fc" id="L29">@Slf4j</span>
+<span class="fc" id="L30">public class InventoryServiceImpl extends ExceptionCommonServiceImpl implements InventoryService {</span>
+
+	/** The Constant UPDATE_STOCK. */
+	public static final String UPDATE_STOCK = &quot;The stock has been updated successfully.&quot;;
+
+	/** The inventory repository. */
+	@Autowired
+	@Qualifier(&quot;inventoryRepository&quot;)
+	private InventoryRepository inventoryRepository;
+
+	/** The product repository. */
+	@Autowired
+	@Qualifier(&quot;productRepository&quot;)
+	private ProductRepository productRepository;
+
+	/** The product inventory repository. */
+	@Autowired
+	@Qualifier(&quot;productInventoryRepository&quot;)
+	private ProductInventoryRepository productInventoryRepository;
+
+	/** The inventory converter. */
+	@Autowired
+	@Qualifier(&quot;inventoryConverter&quot;)
+	private InventoryConverter inventoryConverter;
+
+	/**
+	 * Delete list inventory.
+	 *
+	 * @param listIdInventories the list id inventories
+	 */
+	@Override
+	public void deleteListInventory(Set&lt;String&gt; listIdInventories) {
+<span class="nc" id="L62">		log.info(&quot;Ejecuta servicio: deleteListInventory&quot;);</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">		for (String idInventory : listIdInventories) {</span>
+<span class="nc" id="L64">			inventoryRepository.delete(inventoryRepository.findById(idInventory).get());</span>
+<span class="nc" id="L65">		}</span>
+<span class="nc" id="L66">	}</span>
+
+	/**
+	 * Gets the inventory by id.
+	 *
+	 * @param idInventory the id inventory
+	 * @return the inventory by id
+	 */
+	@Override
+	public InventoryResponse getInventoryById(String idInventory) {
+<span class="nc" id="L76">		log.info(&quot;Ejecuta servicio: getInventoryById&quot;);</span>
+<span class="nc" id="L77">		Inventory inventory = getInventoryByIdInventory(idInventory);</span>
+<span class="nc" id="L78">		return inventoryConverter.convertInventoryToInventoryResponse(inventory);</span>
+	}
+
+	/**
+	 * Update stock.
+	 *
+	 * @param inventoryRequest the inventory request
+	 * @return the string
+	 */
+	@Override
+	public String updateStock(InventoryRequest inventoryRequest) {
+<span class="nc" id="L89">		log.info(&quot;Ejecuta servicio: updateStock&quot;);</span>
+<span class="nc" id="L90">		Product product = getProductByIdProduct(inventoryRequest.getIdProduct());</span>
+<span class="nc" id="L91">		Inventory inventory = getInventoryByIdInventory(inventoryRequest.getIdInventory());</span>
+<span class="nc" id="L92">		ProductInventory productInventory = productInventoryRepository</span>
+<span class="nc" id="L93">				.findProductInventoryByProductAndInventory(product, inventory);</span>
+<span class="nc" id="L94">		productInventory.setStockProduct(productInventory.getStockProduct() + inventoryRequest.getStockProduct());</span>
+<span class="nc" id="L95">		productInventoryRepository.save(productInventory);</span>
+<span class="nc" id="L96">		return UPDATE_STOCK;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductInventoryServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">store</a> &gt; <a href="index.source.html" class="el_package">com.hulk.store.service.impl</a> &gt; <span class="el_source">ProductInventoryServiceImpl.java</span></div><h1>ProductInventoryServiceImpl.java</h1><pre class="source lang-java linenums">package com.hulk.store.service.impl;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
+import com.hulk.store.entity.Inventory;
+import com.hulk.store.entity.Product;
+import com.hulk.store.entity.ProductInventory;
+import com.hulk.store.repository.InventoryRepository;
+import com.hulk.store.repository.ProductInventoryRepository;
+import com.hulk.store.repository.ProductRepository;
+import com.hulk.store.service.InventoryService;
+import com.hulk.store.service.ProductInventoryService;
+
+import lombok.extern.slf4j.Slf4j;
+
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ProductInventoryServiceImpl.
+ */
+@Service(&quot;productInventoryServiceImpl&quot;)
+
+/** The Constant log. */
+<span class="fc" id="L29">@Slf4j</span>
+<span class="fc" id="L30">public class ProductInventoryServiceImpl extends ExceptionCommonServiceImpl implements ProductInventoryService {</span>
+
+	/** The Constant INITIAL_STOCK. */
+	public static final int INITIAL_STOCK = 1;
+
+	/** The product inventory repository. */
+	@Autowired
+	@Qualifier(&quot;productInventoryRepository&quot;)
+	private ProductInventoryRepository productInventoryRepository;
+
+	/** The product repository. */
+	@Autowired
+	@Qualifier(&quot;productRepository&quot;)
+	private ProductRepository productRepository;
+
+	/** The inventory repository. */
+	@Autowired
+	@Qualifier(&quot;inventoryRepository&quot;)
+	private InventoryRepository inventoryRepository;
+
+	/** The inventory service. */
+	@Autowired
+	@Qualifier(&quot;inventoryServiceImpl&quot;)
+	private InventoryService inventoryService;
+
+	/**
+	 * Creates the product inventory.
+	 *
+	 * @param product the product
+	 * @param inventory the inventory
+	 */
+	@Override
+	public void createProductInventory(Product product, Inventory inventory) {
+<span class="nc" id="L63">		log.info(&quot;Ejecuta servicio: createProductInventory&quot;);</span>
+<span class="nc" id="L64">		productInventoryRepository.save(</span>
+<span class="nc" id="L65">				ProductInventory.builder().product(product).inventory(inventory).stockProduct(INITIAL_STOCK).build());</span>
+<span class="nc" id="L66">	}</span>
+
+	/**
+	 * Delete list product inventory.
+	 *
+	 * @param listProductInventories the list product inventories
+	 */
+	@Override
+	public void deleteListProductInventory(List&lt;ProductInventory&gt; listProductInventories) {
+<span class="nc" id="L75">		log.info(&quot;Ejecuta servicio: deleteListProductInventory&quot;);</span>
+<span class="nc" id="L76">		Set&lt;String&gt; listIdInventory = new HashSet&lt;String&gt;();</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">		for (ProductInventory productInventory : listProductInventories) {</span>
+<span class="nc" id="L78">			listIdInventory.add(productInventory.getInventory().getId());</span>
+<span class="nc" id="L79">			productInventoryRepository.delete(productInventory);</span>
+<span class="nc" id="L80">		}</span>
+<span class="nc" id="L81">		inventoryService.deleteListInventory(listIdInventory);</span>
+<span class="nc" id="L82">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

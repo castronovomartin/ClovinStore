@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductCategoryConverter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">store</a> &gt; <a href="index.source.html" class="el_package">com.hulk.store.converter</a> &gt; <span class="el_source">ProductCategoryConverter.java</span></div><h1>ProductCategoryConverter.java</h1><pre class="source lang-java linenums">package com.hulk.store.converter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+
+import com.hulk.store.entity.ProductCategory;
+import com.hulk.store.model.ProductCategoryResponse;
+
+import lombok.extern.slf4j.Slf4j;
+
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ProductCategoryConverter.
+ */
+@Component(&quot;productCategoryConverter&quot;)
+
+/** The Constant log. */
+<span class="fc" id="L20">@Slf4j</span>
+<span class="fc" id="L21">public class ProductCategoryConverter {</span>
+
+	/**
+	 * Convert product category to product category response.
+	 *
+	 * @param productCategory the product category
+	 * @return the product category response
+	 */
+	public ProductCategoryResponse convertProductCategoryToProductCategoryResponse(ProductCategory productCategory) {
+<span class="nc" id="L30">		log.info(&quot;Procede a convertir ProductCategory a ProductCategoryResponse&quot;);</span>
+<span class="nc" id="L31">		return ProductCategoryResponse.builder().idProductCategory(productCategory.getIdProductCategory())</span>
+<span class="nc" id="L32">				.nameCategory(productCategory.getNameCategory()).build();</span>
+	}
+
+	/**
+	 * Convert list product category to list product category response.
+	 *
+	 * @param listProductCategory the list product category
+	 * @return the list
+	 */
+	public List&lt;ProductCategoryResponse&gt; convertListProductCategoryToListProductCategoryResponse(
+			List&lt;ProductCategory&gt; listProductCategory) {
+<span class="nc" id="L43">		log.info(&quot;Procede a convertir List&lt;ProductCategory&gt; a List&lt;ProductCategoryResponse&gt;&quot;);</span>
+<span class="nc" id="L44">		List&lt;ProductCategoryResponse&gt; listProductCategoryResponse = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">		for (ProductCategory productCategory : listProductCategory) {</span>
+<span class="nc" id="L46">			listProductCategoryResponse.add(convertProductCategoryToProductCategoryResponse(productCategory));</span>
+<span class="nc" id="L47">		}</span>
+<span class="nc" id="L48">		return listProductCategoryResponse;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

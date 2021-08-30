@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExceptionCommonServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">store</a> &gt; <a href="index.source.html" class="el_package">com.hulk.store.service.impl</a> &gt; <span class="el_source">ExceptionCommonServiceImpl.java</span></div><h1>ExceptionCommonServiceImpl.java</h1><pre class="source lang-java linenums">package com.hulk.store.service.impl;
+
+import java.util.Objects;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
+import com.hulk.store.converter.TestCrypt;
+import com.hulk.store.entity.BrandCard;
+import com.hulk.store.entity.Inventory;
+import com.hulk.store.entity.Product;
+import com.hulk.store.entity.ProductCategory;
+import com.hulk.store.entity.ShoppingCart;
+import com.hulk.store.entity.User;
+import com.hulk.store.exception.BrandCardExistException;
+import com.hulk.store.exception.CreditCardExistException;
+import com.hulk.store.exception.CreditCardNotFoundException;
+import com.hulk.store.exception.InventoryNotFoundException;
+import com.hulk.store.exception.NoStockException;
+import com.hulk.store.exception.ProductCategoryExistException;
+import com.hulk.store.exception.ProductCategoryNotFoundException;
+import com.hulk.store.exception.ProductExistException;
+import com.hulk.store.exception.ProductNotFoundException;
+import com.hulk.store.exception.ShoppingCartNotFoundException;
+import com.hulk.store.exception.UserExistException;
+import com.hulk.store.exception.UserNotFoundException;
+import com.hulk.store.repository.BrandCardRepository;
+import com.hulk.store.repository.CreditCardRepository;
+import com.hulk.store.repository.InventoryRepository;
+import com.hulk.store.repository.ProductCategoryRepository;
+import com.hulk.store.repository.ProductInventoryRepository;
+import com.hulk.store.repository.ProductRepository;
+import com.hulk.store.repository.ShoppingCartProductRepository;
+import com.hulk.store.repository.ShoppingCartRepository;
+import com.hulk.store.repository.UserRepository;
+
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ExceptionCommonServiceImpl.
+ */
+@Service(&quot;exceptionCommonServiceImpl&quot;)
+<span class="fc" id="L44">public class ExceptionCommonServiceImpl {</span>
+
+	/** The test crypt. */
+	@Autowired
+	@Qualifier(&quot;testCrypt&quot;)
+	private TestCrypt testCrypt;
+
+	/** The product repository. */
+	@Autowired
+	@Qualifier(&quot;productRepository&quot;)
+	public ProductRepository productRepository;
+
+	/** The product category repository. */
+	@Autowired
+	@Qualifier(&quot;productCategoryRepository&quot;)
+	public ProductCategoryRepository productCategoryRepository;
+
+	/** The inventory repository. */
+	@Autowired
+	@Qualifier(&quot;inventoryRepository&quot;)
+	public InventoryRepository inventoryRepository;
+
+	/** The user repository. */
+	@Autowired
+	@Qualifier(&quot;userRepository&quot;)
+	public UserRepository userRepository;
+
+	/** The brand card repository. */
+	@Autowired
+	@Qualifier(&quot;brandCardRepository&quot;)
+	public BrandCardRepository brandCardRepository;
+
+	/** The credit card repository. */
+	@Autowired
+	@Qualifier(&quot;creditCardRepository&quot;)
+	public CreditCardRepository creditCardRepository;
+
+	/** The product inventory repository. */
+	@Autowired
+	@Qualifier(&quot;productInventoryRepository&quot;)
+	public ProductInventoryRepository productInventoryRepository;
+
+	/** The shopping cart product repository. */
+	@Autowired
+	@Qualifier(&quot;shoppingCartProductRepository&quot;)
+	public ShoppingCartProductRepository shoppingCartProductRepository;
+
+	/** The shopping cart repository. */
+	@Autowired
+	@Qualifier(&quot;shoppingCartRepository&quot;)
+	public ShoppingCartRepository shoppingCartRepository;
+
+	/**
+	 * Gets the product category by id product category.
+	 *
+	 * @param idProductCategory the id product category
+	 * @return the product category by id product category
+	 */
+	public ProductCategory getProductCategoryByIdProductCategory(String idProductCategory) {
+<span class="fc" id="L103">		Optional&lt;ProductCategory&gt; productCategory = productCategoryRepository.findById(idProductCategory);</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">		if (!productCategory.isPresent()) {</span>
+<span class="nc" id="L105">			throw new ProductCategoryNotFoundException(&quot;The indicated category does not exist.&quot;,</span>
+<span class="nc" id="L106">					new Exception(&quot;Error ProductCategoryNotFoundException&quot;));</span>
+		} else {
+<span class="fc" id="L108">			return productCategory.get();</span>
+		}
+	}
+
+	/**
+	 * Check product category exist by name.
+	 *
+	 * @param productCategoryName the product category name
+	 */
+	public void checkProductCategoryExistByName(String productCategoryName) {
+<span class="nc bnc" id="L118" title="All 2 branches missed.">		if (!Objects.isNull(productCategoryRepository.findByNameCategory(productCategoryName))) {</span>
+<span class="nc" id="L119">			throw new ProductCategoryExistException(&quot;The category you want to create already exists.&quot;,</span>
+<span class="nc" id="L120">					new Exception(&quot;Error ProductCategoryExistException&quot;));</span>
+		}
+<span class="nc" id="L122">	}</span>
+
+	/**
+	 * Check product exist by name.
+	 *
+	 * @param productName the product name
+	 */
+	public void checkProductExistByName(String productName) {
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">		if (!Objects.isNull(productRepository.findProductByProductName(productName))) {</span>
+<span class="nc" id="L131">			throw new ProductExistException(&quot;The product you want to create already exists.&quot;,</span>
+<span class="nc" id="L132">					new Exception(&quot;Error ProductExistException&quot;));</span>
+		}
+<span class="fc" id="L134">	}</span>
+
+	/**
+	 * Gets the product by id product.
+	 *
+	 * @param idProduct the id product
+	 * @return the product by id product
+	 */
+	public Product getProductByIdProduct(String idProduct) {
+<span class="fc" id="L143">		Optional&lt;Product&gt; product = productRepository.findById(idProduct);</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">		if (!product.isPresent()) {</span>
+<span class="nc" id="L145">			throw new ProductNotFoundException(&quot;The indicated product doesn't exist.&quot;,</span>
+<span class="nc" id="L146">					new Exception(&quot;Error ProductNotFoundException&quot;));</span>
+		} else {
+<span class="fc" id="L148">			return product.get();</span>
+		}
+	}
+
+	/**
+	 * Gets the shopping cart by id shopping cart.
+	 *
+	 * @param idShoppingCart the id shopping cart
+	 * @return the shopping cart by id shopping cart
+	 */
+	public ShoppingCart getShoppingCartByIdShoppingCart(String idShoppingCart) {
+<span class="fc" id="L159">		Optional&lt;ShoppingCart&gt; shoppingCart = shoppingCartRepository.findById(idShoppingCart);</span>
+<span class="pc bpc" id="L160" title="1 of 2 branches missed.">		if (!shoppingCart.isPresent()) {</span>
+<span class="nc" id="L161">			throw new ShoppingCartNotFoundException(&quot;The indicated shopping cart does not exist.&quot;,</span>
+<span class="nc" id="L162">					new Exception(&quot;Error ShoppingCartNotFoundException&quot;));</span>
+		} else {
+<span class="fc" id="L164">			return shoppingCart.get();</span>
+		}
+	}
+
+	/**
+	 * Gets the inventory by id inventory.
+	 *
+	 * @param idInventory the id inventory
+	 * @return the inventory by id inventory
+	 */
+	public Inventory getInventoryByIdInventory(String idInventory) {
+<span class="fc" id="L175">		Optional&lt;Inventory&gt; inventory = inventoryRepository.findById(idInventory);</span>
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">		if (!inventory.isPresent()) {</span>
+<span class="nc" id="L177">			throw new InventoryNotFoundException(&quot;The indicated inventory does not exist.&quot;,</span>
+<span class="nc" id="L178">					new Exception(&quot;Error InventoryNotFoundException&quot;));</span>
+		} else {
+<span class="fc" id="L180">			return inventory.get();</span>
+		}
+	}
+
+	/**
+	 * Check user exist by username.
+	 *
+	 * @param username the username
+	 */
+	public void checkUserExistByUsername(String username) {
+<span class="nc bnc" id="L190" title="All 2 branches missed.">		if (!Objects.isNull(userRepository.findByUsername(username))) {</span>
+<span class="nc" id="L191">			throw new UserExistException(&quot;The username entered already exists.&quot;,</span>
+<span class="nc" id="L192">					new Exception(&quot;Error UserExistException&quot;));</span>
+		}
+<span class="nc" id="L194">	}</span>
+
+	/**
+	 * Check brand card exist by name.
+	 *
+	 * @param brandCardName the brand card name
+	 */
+	public void checkBrandCardExistByName(String brandCardName) {
+<span class="nc bnc" id="L202" title="All 2 branches missed.">		if (!Objects.isNull(brandCardRepository.findByNameCard(brandCardName))) {</span>
+<span class="nc" id="L203">			throw new BrandCardExistException(&quot;The credit card brand you want to create already exists.&quot;,</span>
+<span class="nc" id="L204">					new Exception(&quot;Error BrandCardExistException&quot;));</span>
+		}
+<span class="nc" id="L206">	}</span>
+
+	/**
+	 * Gets the brand card by id.
+	 *
+	 * @param IdBrandCard the id brand card
+	 * @return the brand card by id
+	 */
+	public BrandCard getBrandCardById(String IdBrandCard) {
+<span class="nc" id="L215">		Optional&lt;BrandCard&gt; brandCard = brandCardRepository.findById(IdBrandCard);</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">		if (!brandCard.isPresent()) {</span>
+<span class="nc" id="L217">			throw new BrandCardExistException(&quot;The indicated credit card brand does not exist.&quot;,</span>
+<span class="nc" id="L218">					new Exception(&quot;Error BrandCardExistException&quot;));</span>
+		} else {
+<span class="nc" id="L220">			return brandCard.get();</span>
+		}
+	}
+
+	/**
+	 * Check user exist by username and password.
+	 *
+	 * @param username the username
+	 * @param password the password
+	 */
+	public void checkUserExistByUsernameAndPassword(String username, String password) {
+<span class="nc" id="L231">		if (Objects.isNull(</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">				userRepository.findByUsernameAndPassword(testCrypt.encrypt(username), testCrypt.encrypt(password)))) {</span>
+<span class="nc" id="L233">			throw new UserNotFoundException(&quot;The username or password entered with incorrect.&quot;,</span>
+<span class="nc" id="L234">					new Exception(&quot;Error UserNotFoundException&quot;));</span>
+		}
+<span class="nc" id="L236">	}</span>
+
+	/**
+	 * Gets the user by id user.
+	 *
+	 * @param idUser the id user
+	 * @return the user by id user
+	 */
+	public User getUserByIdUser(String idUser) {
+<span class="fc" id="L245">		Optional&lt;User&gt; user = userRepository.findById(idUser);</span>
+<span class="pc bpc" id="L246" title="1 of 2 branches missed.">		if (!user.isPresent()) {</span>
+<span class="nc" id="L247">			throw new UserNotFoundException(&quot;The indicated user does not exist.&quot;,</span>
+<span class="nc" id="L248">					new Exception(&quot;Error UserNotFoundException&quot;));</span>
+		} else {
+<span class="fc" id="L250">			return user.get();</span>
+		}
+	}
+
+	/**
+	 * Check credit card exist by card number.
+	 *
+	 * @param cardNumber the card number
+	 */
+	public void checkCreditCardExistByCardNumber(String cardNumber) {
+<span class="nc bnc" id="L260" title="All 2 branches missed.">		if (!Objects.isNull(creditCardRepository.findByCardNumber(testCrypt.encrypt(cardNumber)))) {</span>
+<span class="nc" id="L261">			throw new CreditCardExistException(&quot;The credit card you want to create already exists.&quot;,</span>
+<span class="nc" id="L262">					new Exception(&quot;Error CreditCardExistException&quot;));</span>
+		}
+<span class="nc" id="L264">	}</span>
+
+	/**
+	 * Check if there is stock by id product.
+	 *
+	 * @param product   the product
+	 * @param inventory the inventory
+	 * @param quantity  the quantity
+	 */
+	public void checkIfThereIsStockByIdProduct(Product product, Inventory inventory, int quantity) {
+<span class="fc" id="L274">		if (productInventoryRepository.findProductInventoryByProductAndInventory(product, inventory)</span>
+<span class="pc bpc" id="L275" title="1 of 2 branches missed.">				.getStockProduct() &lt; quantity) {</span>
+<span class="nc" id="L276">			throw new NoStockException(&quot;There is no stock of the selected product: &quot; + product.getProductName(),</span>
+<span class="nc" id="L277">					new Exception(&quot;Error NoStockException&quot;));</span>
+		}
+<span class="fc" id="L279">	}</span>
+
+	/**
+	 * Check if the user has an associated card.
+	 *
+	 * @param user the user
+	 */
+	public void checkIfTheUserHasAnAssociatedCard(User user) {
+<span class="pc bpc" id="L287" title="1 of 2 branches missed.">		if (Objects.isNull(creditCardRepository.findByUser(user))) {</span>
+<span class="nc" id="L288">			throw new CreditCardNotFoundException(&quot;The user does not have an associated credit card.&quot;,</span>
+<span class="nc" id="L289">					new Exception(&quot;Error CreditCardNotFoundException&quot;));</span>
+		}
+<span class="fc" id="L291">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
