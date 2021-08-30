@@ -1,0 +1,483 @@
+{
+	"info": {
+		"_postman_id": "f005e120-04c7-45c3-bac4-c76b23db9f42",
+		"name": "CLOVINN",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ProductController",
+			"item": [
+				{
+					"name": "createProduct",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productName\": \"Remera Aquaman\",\r\n    \"productPrice\": 600,\r\n    \"idProductCategory\": \"29a5fc82-8c7c-47f4-afcb-5cd684536b7e\",\r\n    \"idInventory\": \"57b84f12-e510-4454-b8cb-aa67c3851uidf\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8084/products",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateProduct",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productName\": \"Remera Thor\",\r\n    \"productPrice\": 200,\r\n    \"idProductCategory\": \"29a5fc82-8c7c-47f4-afcb-5cd684536b7e\",\r\n    \"idInventory\": \"57b84f12-e510-4454-b8cb-aa67c3851uidf\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8084/products/38cf6a1c-6d5c-42b2-bc2b-e9b49e9f2504",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"products",
+								"38cf6a1c-6d5c-42b2-bc2b-e9b49e9f2504"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteProduct",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8084/products/38cf6a1c-6d5c-42b2-bc2b-e9b49e9f2504",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"products",
+								"38cf6a1c-6d5c-42b2-bc2b-e9b49e9f2504"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getProduct",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8084/products/e804ca73-7635-4b19-8604-c316894c6880",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"products",
+								"e804ca73-7635-4b19-8604-c316894c6880"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllProducts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8084/products",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ProductCategoryController",
+			"item": [
+				{
+					"name": "createCategory",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8084/categories?categoryName=DC",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"categories"
+							],
+							"query": [
+								{
+									"key": "categoryName",
+									"value": "DC"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateCategory",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:8084/categories/e4235c92-96d5-466c-8c89-e66cceb2f54a?categoryName=DC",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"categories",
+								"e4235c92-96d5-466c-8c89-e66cceb2f54a"
+							],
+							"query": [
+								{
+									"key": "categoryName",
+									"value": "DC"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteCategory",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8084/categories/e4235c92-96d5-466c-8c89-e66cceb2f54a",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"categories",
+								"e4235c92-96d5-466c-8c89-e66cceb2f54a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getCategory",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8084/categories/11ec37be-8b0c-4eee-9a21-b7df5470ced9",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"categories",
+								"11ec37be-8b0c-4eee-9a21-b7df5470ced9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllCategories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8084/categories",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CreditCardController",
+			"item": [
+				{
+					"name": "createCreditCard",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cardNumber\": \"5148956254876548\",\r\n    \"securityCode\": \"123\",\r\n    \"idUser\": \"8fa7f9bf-8bc2-41f9-86e2-4e723d36b55e\",\r\n    \"idBrandCard\": \"654c9a66-e0af-4c6e-97a9-efc76ec82356\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8084/cards",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"cards"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "BrandCardController",
+			"item": [
+				{
+					"name": "createBrandCard",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"brandCardName\": \"Mastercard\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8084/brands",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"brands"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "InventoryController",
+			"item": [
+				{
+					"name": "getInventoryById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8084/inventories/57b84f12-e510-4454-b8cb-aa67c3851ui",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"inventories",
+								"57b84f12-e510-4454-b8cb-aa67c3851ui"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateStock",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"stockProduct\": 3,\r\n    \"idProduct\": \"a296dd47-6c6e-4ddc-bd70-2c9bd5aed7a8\",\r\n    \"idInventory\": \"57b84f12-e510-4454-b8cb-aa67c3851uidf\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8084/inventories",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"inventories"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UserController",
+			"item": [
+				{
+					"name": "createUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"soledadreitano\",\r\n    \"password\": \"1009\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8084/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ShoppingCartController",
+			"item": [
+				{
+					"name": "addProductShoppingCart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idUser\": \"0a7fbd9d-3408-49fa-bf15-054baa61489d\",\r\n    \"idProduct\": \"cc8a163b-020f-444d-88d3-4bec106ec957\",\r\n    \"idInventory\": \"57b84f12-e510-4454-b8cb-aa67c3851uidf\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8084/carts",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"carts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteShoppingCartProduct",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idUser\": \"0a7fbd9d-3408-49fa-bf15-054baa61489d\",\r\n    \"idProduct\": \"cc8a163b-020f-444d-88d3-4bec106ec957\",\r\n    \"idInventory\": \"57b84f12-e510-4454-b8cb-aa67c3851uidf\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8084/carts/18df9175-08fd-498d-92be-dda8df72e09c",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"carts",
+								"18df9175-08fd-498d-92be-dda8df72e09c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "makeAPurchase",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8084/carts/{id}?idInventory",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"carts",
+								"{id}"
+							],
+							"query": [
+								{
+									"key": "idInventory",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
